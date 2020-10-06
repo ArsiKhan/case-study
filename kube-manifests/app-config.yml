@@ -1,0 +1,11 @@
+--- 
+
+apiVersion: v1
+data: 
+  MONGO_HOST: "192.168.90.82"
+  MONGO_PORT: "6348"
+kind: ConfigMap
+metadata: 
+  name: app-config
+
+

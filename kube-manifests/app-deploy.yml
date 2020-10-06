@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  labels:
+    app: node-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: node-app
+  template:
+    metadata:
+      labels:
+        app: node-app
+    spec:
+      containers:
+      - name: node-app
+        image: arsalankhan/node-app:1.0.1
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1024Mi"
+            cpu: "500m"
+        env:
+          - name: SERVE_PORT
+            value: "8593"
+          - name: MONGO_USERNAME
+            valueFrom:
+              secretKeyRef:
+                key: username
+                name: mongo-info
+          - name: MONGO_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: mongo-info
+          - name: MONGO_HOST
+            valueFrom:
+              configMapKeyRef:
+                key: MONGO_HOST
+                name: app-config
+          - name: MONGO_PORT
+            valueFrom:
+             configMapKeyRef:
+                key: MONGO_PORT
+                name: app-config
+          - name: MONGO_DB
+            valueFrom:
+             secretKeyRef:
+                key: db
+                name: mongo-info
+
